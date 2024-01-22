@@ -1,1 +1,54 @@
-A
+Analysis of PIZZA SALES using SQL QUERIES ,SQL Project.
+
+A. KPI
+1.Total Revenue:
+select sum(total_Price) total_revenue from pizza_sales;
+  
+2.Average Order Value:
+select sum(total_price)/ count(distinct order_id) as avg_order_value from pizza_sales;
+ 
+3.Total Pizzas Sold
+select sum(quantity) total_pizzas_sold from pizza_sales;
+ 
+4.Total Orders
+select count(distinct order_id) Total_Orders from pizza_sales; 
+ 
+5. Average Pizzas per Order
+select sum(quantity) /count(distinct order_id) avg_pizza_sold_perOrder from pizza_sales;
+ 
+6. Average Pizzas per Order
+select cast(cast(sum(quantity) as decimal(10,2)) /cast(count(distinct order_id) as decimal(10,2)) as decimal(10,2)) avg_pizza_sold_perOrder from pizza_sales; 
+
+B. Daily Trend for Total Orders:
+select DATENAME(DW, order_date) as order_day, count(distinct order_id) as total_orders from pizza_sales group by DATENAME(DW, order_date);
+
+C. Hourly Trend for Total Orders:
+select DATEPART(HOUR,order_time) as order_hours, count(distinct order_id) as total_orders from pizza_sales
+group by DATEPART(HOUR,order_time)
+order by DATEPART(HOUR,order_time); 
+
+D. Percentage of Sales of the Pizza Category:
+
+select pizza_category ,sum(total_price) as total_sales, sum(total_price) * 100 / (select sum(total_price) from pizza_sales) as percentOf_total_sales
+from pizza_sales 
+group by pizza_category; 
+ 
+E. Percentage of Sales of the Pizza Size:
+select pizza_size ,sum(total_price) as total_sales, sum(total_price) * 100 / (select sum(total_price) from pizza_sales) as percentOf_total_sales
+from pizza_sales 
+group by pizza_size;
+ 
+F. Total Pizza sold by pizza category:
+select pizza_category,sum(quantity) as tot_pizza_sold from pizza_sales
+group by pizza_category;
+ 
+G. Top 5 Best sellers by Total Pizzas Sold:
+select top 5 pizza_name, sum(quantity)as tot_Pizza_Sold from pizza_sales
+group by pizza_name
+order by tot_Pizza_Sold desc;
+ 
+H. Bottom 5 worst seller by Total Pizza sold:
+select top 5 pizza_name, sum(quantity)as tot_Pizza_Sold from pizza_sales
+group by pizza_name
+order by tot_Pizza_Sold asc;
+ 
